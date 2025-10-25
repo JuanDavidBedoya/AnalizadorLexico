@@ -1,5 +1,5 @@
 export const Categoria = Object.freeze({
-    
+
     // Palabras Reservadas
     PALABRA_RESERVADA: 'Palabra Reservada', 
 
@@ -14,13 +14,12 @@ export const Categoria = Object.freeze({
     OPERADOR_ARITMETICO: 'Operador Aritmético', 
     OPERADOR_COMPARACION: 'Operador de Comparación', //AZUL
     OPERADOR_LOGICO: 'Operador Lógico', //VERDE
-    OPERADOR_ASIGNACION: 'Operador de Asignación', 
-    OPERADOR_INCREMENTO: 'Operador de Incremento', 
-    OPERADOR_DECREMENTO: 'Operador de Decremento', 
+    OPERADOR_ASIGNACION: 'Operador de Asignación', //NARANJA
+    OPERADOR_INCREMENTO_DECREMENTO: 'Operador de Incremento o Decremento', //MORADO
 
     // Delimitadores
-    PARENTESIS_APERTURA: 'Paréntesis de Apertura', 
-    PARENTESIS_CIERRE: 'Paréntesis de Cierre', 
+    PARENTESIS_APERTURA: 'Paréntesis de Apertura', //CYAN
+    PARENTESIS_CIERRE: 'Paréntesis de Cierre', //CYAN
     LLAVE_APERTURA: 'Llave de Apertura', 
     LLAVE_CIERRE: 'Llave de Cierre', 
     TERMINAL: 'Terminal (Fin de Sentencia)', 

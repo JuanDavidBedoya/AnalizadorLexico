@@ -37,12 +37,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const fila = document.createElement('tr');
 
             if (token.categoria.startsWith('Error:')) {
-                fila.classList.add('bg-red-100', 'text-red-800');
-            } else if (token.categoria === Categoria.OPERADOR_COMPARACION) {
-                fila.classList.add('bg-blue-100', 'text-blue-800', 'font-medium');
-            }
-            else if (token.categoria === Categoria.OPERADOR_LOGICO) {
-                fila.classList.add('bg-green-100', 'text-green-800', 'font-medium');
+                fila.classList.add('bg-red-200', 'text-red-800');
+            }else if (token.categoria === Categoria.OPERADOR_COMPARACION) {
+                fila.classList.add('bg-blue-200', 'text-blue-800', 'font-medium');
+            }else if (token.categoria === Categoria.OPERADOR_LOGICO) {
+                fila.classList.add('bg-green-200', 'text-green-800', 'font-medium');
+            }else if (token.categoria === Categoria.OPERADOR_ASIGNACION) {
+                fila.classList.add('bg-orange-200', 'text-orange-800', 'font-medium');
+            }else if (token.categoria === Categoria.OPERADOR_INCREMENTO_DECREMENTO){
+                fila.classList.add('bg-indigo-200', 'text-indigo-800', 'font-medium');
+            }else if (token.categoria === Categoria.PARENTESIS_APERTURA ||
+                       token.categoria === Categoria.PARENTESIS_CIERRE) {
+                fila.classList.add('bg-cyan-200', 'text-cyan-800', 'font-medium');
             }
             
             fila.innerHTML = `
