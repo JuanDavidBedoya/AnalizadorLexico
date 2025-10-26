@@ -20,7 +20,12 @@ export class AnalizadorLexico {
             }
 
             // 2. Comprobación de todos los tokens, aquí se llaman los autómatas
-            let token = this.extraerComparacion() ||
+            let token = this.extraerComentarios() ||
+                        this.extraerCadenaCaracteres() ||
+                        this.extraerLlaves() ||
+                        this.extraerTerminal() ||             
+                        this.extraerSeparador() ||
+                        this.extraerComparacion() ||
                         this.extraerLogico() || 
                         this.extraerAsignacion() ||
                         this.extraerIncrementoDecremento()  ||
@@ -296,6 +301,189 @@ export class AnalizadorLexico {
         }
 
         return new Token(lexema, categoria, this.indice);
+    }
+
+    //Autómata 11
+    extraerLlaves() {
+        const charActual = this.caracterActual();
+        let lexema = null;
+        let categoria = null;
+
+        switch (charActual) {
+            case '{':
+                lexema = '{';
+                categoria = Categoria.LLAVE_APERTURA;
+                this.avanzar();
+                break;
+            case '}':
+                lexema = '}';
+                categoria = Categoria.LLAVE_CIERRE;
+                this.avanzar();
+                break;
+            default:
+                return null;
+        }
+
+        return new Token(lexema, categoria, this.indice - lexema.length);
+    }
+
+    //Autómata 12 
+    extraerTerminal() {
+        const charActual = this.caracterActual();
+
+        if (charActual === ';') {
+            const lexema = ';';
+            this.avanzar();
+
+            return new Token(lexema, Categoria.TERMINAL, this.indice - 1);
+        }
+
+        return null;
+    }
+
+    //Autómata 13
+    extraerSeparador() {
+        const charActual = this.caracterActual();
+
+        if (charActual === ',') {
+            const lexema = ',';
+            this.avanzar();
+            return new Token(lexema, Categoria.SEPARADOR, this.indice - 1);
+        }
+
+        return null;
+    }
+
+    //Autómata 14
+    extraerCadenaCaracteres() {
+        const charActual = this.caracterActual();
+        const charSiguiente = this.caracterSiguiente();
+        const charSiguiente2 = this.caracterSiguienteSiguiente();
+        const posicionInicial = this.indice;
+        
+        let delimitador = null;
+        let esMultilinea = false;
+
+        if (charActual === '"') {
+            if (charSiguiente === '"' && charSiguiente2 === '"') {
+                delimitador = '"""';
+                esMultilinea = true;
+            } else {
+                delimitador = '"';
+            }
+        } else if (charActual === '\'') {
+            if (charSiguiente === '\'' && charSiguiente2 === '\'') {
+                delimitador = "'''";
+                esMultilinea = true;
+            } else {
+                delimitador = '\'';
+            }
+        }
+
+        if (!delimitador) {
+            return null;
+        }
+
+        for (let i = 0; i < delimitador.length; i++) {
+            this.avanzar();
+        }
+
+        let lexema = delimitador;
+
+        while (this.indice < this.codigoFuente.length) {
+            let char = this.caracterActual();
+            let finDelimitador = this.codigoFuente.substring(this.indice, this.indice + delimitador.length);
+            
+            if (!esMultilinea && (char === '\n' || char === '\r')) {
+
+                const tokenError = new Token(
+                    lexema,
+                    Categoria.ERROR_CADENA_SIN_CERRAR,
+                    posicionInicial
+                );
+
+                return tokenError;
+            }
+
+            if (char === '\\') {
+                const charSiguienteEscape = this.caracterSiguiente();
+                if (charSiguienteEscape !== '\0') {
+                    lexema += char + charSiguienteEscape;
+                    this.avanzar();
+                    this.avanzar(); 
+                } else {
+                    this.avanzar(); 
+                    const tokenError = new Token(
+                        lexema,
+                        Categoria.ERROR_CADENA_SIN_CERRAR,
+                        posicionInicial
+                    );
+                    return tokenError;
+                }
+                continue;
+            }
+
+            if (finDelimitador === delimitador) {
+                for (let i = 0; i < delimitador.length; i++) {
+                    this.avanzar();
+                }
+                lexema += delimitador;
+                return new Token(lexema, Categoria.CADENA_CARACTERES, posicionInicial);
+            }
+
+            lexema += char;
+            this.avanzar();
+        }
+
+        return new Token(lexema, Categoria.ERROR_CADENA_SIN_CERRAR, posicionInicial);
+    }
+
+    //Autómata 15
+    extraerComentarios() {
+        const charActual = this.caracterActual();
+        const charSiguiente = this.caracterSiguiente();
+        const posicionInicial = this.indice;
+
+        if (charActual === '/') {
+            if (charSiguiente === '/') {
+                this.avanzar(); this.avanzar();
+                let lexema = '//';
+                while (this.indice < this.codigoFuente.length && this.caracterActual() !== '\n' && this.caracterActual() !== '\r') {
+                    lexema += this.caracterActual();
+                    this.avanzar();
+                }
+                return new Token(lexema, Categoria.COMENTARIO_LINEA, posicionInicial);
+
+            } else if (charSiguiente === '*') {
+                this.avanzar(); this.avanzar();
+                let lexema = '/*';
+                let encontradoCierre = false;
+
+                while (this.indice < this.codigoFuente.length) {
+                    const char = this.caracterActual();
+                    const nextChar = this.caracterSiguiente();
+
+                    if (char === '*' && nextChar === '/') {
+                        lexema += '*/';
+                        this.avanzar(); this.avanzar();
+                        encontradoCierre = true;
+                        break;
+                    }
+
+                    lexema += char;
+                    this.avanzar();
+                }
+
+                if (encontradoCierre) {
+                    return new Token(lexema, Categoria.COMENTARIO_BLOQUE, posicionInicial);
+                } else {
+
+                    return new Token(lexema, Categoria.ERROR_BLOQUE_SIN_CERRAR, posicionInicial);
+                }
+            }
+        }
+
+        return null;
     }
 
     //Métodos auxiliares

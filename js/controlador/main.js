@@ -49,7 +49,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }else if (token.categoria === Categoria.PARENTESIS_APERTURA ||
                        token.categoria === Categoria.PARENTESIS_CIERRE) {
                 fila.classList.add('bg-cyan-200', 'text-cyan-800', 'font-medium');
+            }else if (token.categoria === Categoria.LLAVE_APERTURA ||
+                     token.categoria === Categoria.LLAVE_CIERRE) {
+                fila.classList.add('bg-gray-200', 'text-gray-800');
+            }else if (token.categoria === Categoria.TERMINAL) {
+                fila.classList.add('bg-slate-300', 'text-slate-900', 'font-bold');
+            }else if (token.categoria === Categoria.SEPARADOR) {
+                fila.classList.add('bg-yellow-100', 'text-yellow-700');
+            }else if (token.categoria === Categoria.CADENA_CARACTERES) {
+                fila.classList.add('bg-yellow-100', 'text-yellow-800');
+            }else if (token.categoria === Categoria.COMENTARIO_LINEA ||
+                       token.categoria === Categoria.COMENTARIO_BLOQUE) {
+                fila.classList.add('bg-teal-100', 'text-teal-700', 'italic');
             }
+
+            let lexemaParaMostrar = token.lexema;
             
             fila.innerHTML = `
                 <td>${token.lexema}</td>
