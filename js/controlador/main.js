@@ -51,16 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 fila.classList.add('bg-cyan-200', 'text-cyan-800', 'font-medium');
             }else if (token.categoria === Categoria.LLAVE_APERTURA ||
                      token.categoria === Categoria.LLAVE_CIERRE) {
-                fila.classList.add('bg-gray-200', 'text-gray-800');
+                fila.classList.add('bg-gray-200', 'text-gray-800', 'font-medium');
             }else if (token.categoria === Categoria.TERMINAL) {
-                fila.classList.add('bg-slate-300', 'text-slate-900', 'font-bold');
+                fila.classList.add('bg-lime-200', 'text-lime-800', 'font-medium');
             }else if (token.categoria === Categoria.SEPARADOR) {
-                fila.classList.add('bg-yellow-100', 'text-yellow-700');
+                fila.classList.add('bg-pink-200', 'text-pink-800', 'font-medium');
             }else if (token.categoria === Categoria.CADENA_CARACTERES) {
-                fila.classList.add('bg-yellow-100', 'text-yellow-800');
+                fila.classList.add('bg-yellow-200', 'text-yellow-800', 'font-medium');
             }else if (token.categoria === Categoria.COMENTARIO_LINEA ||
                        token.categoria === Categoria.COMENTARIO_BLOQUE) {
-                fila.classList.add('bg-teal-100', 'text-teal-700', 'italic');
+                fila.classList.add('bg-teal-200', 'text-teal-800', 'font-medium');
             }
 
             let lexemaParaMostrar = token.lexema;

@@ -20,21 +20,21 @@ export const Categoria = Object.freeze({
     // Delimitadores
     PARENTESIS_APERTURA: 'Paréntesis de Apertura', //CYAN
     PARENTESIS_CIERRE: 'Paréntesis de Cierre', //CYAN
-    LLAVE_APERTURA: 'Llave de Apertura', 
-    LLAVE_CIERRE: 'Llave de Cierre', 
-    TERMINAL: 'Terminal (Fin de Sentencia)', 
-    SEPARADOR: 'Separador (Coma)', 
+    LLAVE_APERTURA: 'Llave de Apertura', //GRIS
+    LLAVE_CIERRE: 'Llave de Cierre', //GRIS
+    TERMINAL: 'Terminal (Fin de Sentencia)', //LIMA
+    SEPARADOR: 'Separador (Coma)', //ROSADO
 
     // Literales
-    CADENA_CARACTERES: 'Cadena de Caracteres', 
+    CADENA_CARACTERES: 'Cadena de Caracteres', //AMARILLO
 
     // Comentarios
-    COMENTARIO_LINEA: 'Comentario de Línea', 
-    COMENTARIO_BLOQUE: 'Comentario de Bloque', 
+    COMENTARIO_LINEA: 'Comentario de Línea', //TEAL
+    COMENTARIO_BLOQUE: 'Comentario de Bloque', //TEAL
 
     // Errores
-    ERROR_CADENA_SIN_CERRAR: 'Error: Cadena sin cerrar',
-    ERROR_BLOQUE_SIN_CERRAR: 'Error: Bloque sin cerrar',
-    ERROR_IDENTIFICADOR_LARGO: 'Error: Identificador muy largo',
+    ERROR_CADENA_SIN_CERRAR: 'Error: Cadena sin cerrar', //ROJO
+    ERROR_BLOQUE_SIN_CERRAR: 'Error: Bloque sin cerrar', //ROJO
+    ERROR_IDENTIFICADOR_LARGO: 'Error: Identificador muy largo', //ROJO
     ERROR_TOKEN_NO_RECONOCIDO: 'Error: Token no reconocido' //ROJO
 });
