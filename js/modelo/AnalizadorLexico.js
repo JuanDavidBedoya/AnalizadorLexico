@@ -3,7 +3,7 @@ import { Token } from './Token.js';
 
 export class AnalizadorLexico {
 
-    //Inicio del Analizador Léxico
+    //Inicio del Analizador Léxico HOLAAAAAAAAAAAA
 
     constructor(codigoFuente) {
         this.codigoFuente = codigoFuente;
@@ -63,7 +63,6 @@ export class AnalizadorLexico {
             return null;
         }
 
-       
         while (this.esDigito(this.caracterActual())) {
             lexema += this.caracterActual();
             this.avanzar();
