@@ -3,6 +3,8 @@ import { Token } from './Token.js';
 
 export class AnalizadorLexico {
 
+    //Inicio del Analizador Léxico
+
     constructor(codigoFuente) {
         this.codigoFuente = codigoFuente;
         this.tokens = [];
@@ -21,10 +23,10 @@ export class AnalizadorLexico {
 
             // 2. Comprobación de todos los tokens, aquí se llaman los autómatas
             let token = this.extraerComentarios() ||
-                        this.extraerCadenaCaracteres() ||
-                        this.extraerLlaves() ||
-                        this.extraerTerminal() ||             
-                        this.extraerSeparador() ||
+                        this.extraerCadenaCaracteres() ||
+                        this.extraerLlaves() ||
+                        this.extraerTerminal() ||             
+                        this.extraerSeparador() ||
                         this.extraerComparacion() ||
                         this.extraerLogico() || 
                         this.extraerAsignacion() ||
