@@ -62,9 +62,19 @@ document.addEventListener('DOMContentLoaded', () => {
                        token.categoria === Categoria.COMENTARIO_BLOQUE) {
                 fila.classList.add('bg-teal-200', 'text-teal-800', 'font-medium'); 
             }else if (token.categoria === Categoria.NUMERO_ENTERO) {
-                fila.classList.add('bg-purple-200', 'text-purple-800', 'font-medium');
+                fila.classList.add('bg-purple-400', 'text-purple-800', 'font-medium');
+            }else if (token.categoria === Categoria.NUMERO_DECIMAL) {
+                fila.classList.add('bg-amber-300', 'text-amber-900', 'font-medium');
+            }else if (token.categoria === Categoria.IDENTIFICADOR) {
+                fila.classList.add('bg-emerald-200', 'text-emerald-800', 'font-medium');
+            }else if (token.categoria === Categoria.ERROR_LONGITUD_IDENTIFICADOR) {
+                fila.classList.add('bg-rose-300', 'text-rose-900', 'font-medium'); 
+            }else if (token.categoria === Categoria.PALABRA_RESERVADA) {
+                fila.classList.add('bg-zinc-500', 'text-zinc-800', 'font-semibold'); 
+            }else if (token.categoria === Categoria.OPERADOR_ARITMETICO) {
+                fila.classList.add('bg-stone-200', 'text-stone-800', 'font-semibold'); 
             }
-            
+
 
             let lexemaParaMostrar = token.lexema;
             

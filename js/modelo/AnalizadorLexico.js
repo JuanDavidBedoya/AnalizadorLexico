@@ -32,7 +32,13 @@ export class AnalizadorLexico {
                         this.extraerAsignacion() ||
                         this.extraerIncrementoDecremento()  ||
                         this.extraerParentesis() ||
-                        this.extraerEntero();
+                        this.extraerPalabraReservada() ||
+                        this.extraerIdentificador() ||
+                        this.extraerDecimal() ||
+                        this.extraerEntero() ||
+                        this.extraerOperadorAritmetico() 
+                        
+
             if (token) {
                 this.tokens.push(token);
             } else {
@@ -75,6 +81,129 @@ export class AnalizadorLexico {
         return new Token(lexema, categoria, this.indice);
     }
 
+    // Autómata 2
+    extraerDecimal() {
+        const inicio = this.indice;
+        let lexema = "";
+
+        if (!this.esDigito(this.caracterActual())) {
+            return null;
+        }
+
+        while (this.esDigito(this.caracterActual())) {
+            lexema += this.caracterActual();
+            this.avanzar();
+        }
+
+        if (this.caracterActual() === '.' && this.esDigito(this.caracterSiguiente())) {
+            lexema += this.caracterActual(); 
+            this.avanzar();
+
+            while (this.esDigito(this.caracterActual())) {
+                lexema += this.caracterActual();
+                this.avanzar();
+            }
+
+            return new Token(lexema, Categoria.NUMERO_DECIMAL, inicio);
+        } else {
+            this.indice = inicio;
+            return null;
+        }
+    } 
+    
+    // Autómata 3
+    extraerIdentificador() {
+    const inicio = this.indice;
+    let lexema = '';
+
+    const charInicial = this.caracterActual();
+    if (!(this.esLetra(charInicial) || charInicial === '_')) {
+        return null;
+    }
+
+    lexema += charInicial;
+    this.avanzar();
+
+    while (
+        this.caracterActual() !== null &&
+        (this.esLetra(this.caracterActual()) ||
+        this.esDigito(this.caracterActual()) ||
+        this.caracterActual() === '_')
+    ) {
+        lexema += this.caracterActual();
+        this.avanzar();
+    }
+
+    if (lexema.length > 15) {
+        console.warn(`❌ Identificador demasiado largo: "${lexema}" (${lexema.length} caracteres)`);
+
+        return new Token(lexema, Categoria.ERROR_LONGITUD_IDENTIFICADOR, inicio);
+    }
+
+    return new Token(lexema, Categoria.IDENTIFICADOR, inicio);
+}
+
+    // Autómata 4: 
+    extraerPalabraReservada() {
+        const inicio = this.indice;
+        let lexema = '';
+
+        const palabrasReservadas = [
+            'import', 'class', 'void', 'if', 'else',
+            'for', 'while', 'return', 'break', 'continue',
+            'new', 'this', 'super', 'const', 'final',
+            'var', 'true', 'false', 'null'
+        ];
+
+        const charInicial = this.caracterActual();
+        if (!this.esLetra(charInicial)) {
+            return null;
+        }
+
+        lexema += charInicial;
+        this.avanzar();
+
+        while (
+            this.caracterActual() !== null &&
+            (this.esLetra(this.caracterActual()) || this.esDigito(this.caracterActual()))
+        ) {
+            lexema += this.caracterActual();
+            this.avanzar();
+        }
+
+        if (palabrasReservadas.includes(lexema)) {
+            return new Token(lexema, Categoria.PALABRA_RESERVADA, inicio);
+        }
+
+        this.indice = inicio; 
+        return null;
+    }
+
+    // Autómata 5: Operadores aritméticos (+, -, *, /, %)
+    extraerOperadorAritmetico() {
+        const inicio = this.indice;
+        const char = this.caracterActual();
+
+        // Lista de operadores válidos en Dart
+        const operadoresSimples = ['+', '-', '*', '/', '%'];
+
+        // Doble operador (por ejemplo: ++ o --)
+        const siguiente = this.caracterSiguiente();
+        if ((char === '+' && siguiente === '+') || (char === '-' && siguiente === '-')) {
+            const lexema = char + siguiente;
+            this.avanzar(); 
+            this.avanzar();
+            return new Token(lexema, Categoria.OPERADOR_ARITMETICO, inicio);
+        }
+
+        // Operadores simples
+        if (operadoresSimples.includes(char)) {
+            this.avanzar();
+            return new Token(char, Categoria.OPERADOR_ARITMETICO, inicio);
+        }
+
+        return null; // No es un operador aritmético
+    }
 
 
 

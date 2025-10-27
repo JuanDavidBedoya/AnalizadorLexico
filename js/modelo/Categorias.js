@@ -1,17 +1,19 @@
 export const Categoria = Object.freeze({
 
     // Palabras Reservadas
-    PALABRA_RESERVADA: 'Palabra Reservada', 
+    PALABRA_RESERVADA: 'Palabra Reservada', //ZINC
 
     // Identificadores
-    IDENTIFICADOR: 'Identificador', 
+    IDENTIFICADOR: 'Identificador', //ESMERALDA
+    ERROR_LONGITUD_IDENTIFICADOR: 'Error: Identificador muy largo', //ROSA
+
 
     // Números
-    NUMERO_ENTERO: 'Número Entero', 
-    NUMERO_DECIMAL: 'Número Decimal', 
+    NUMERO_ENTERO: 'Número Entero', //PURPURA
+    NUMERO_DECIMAL: 'Número Decimal', //AMBAR
 
     // Operadores
-    OPERADOR_ARITMETICO: 'Operador Aritmético', 
+    OPERADOR_ARITMETICO: 'Operador Aritmético', //STONE
     OPERADOR_COMPARACION: 'Operador de Comparación', //AZUL
     OPERADOR_LOGICO: 'Operador Lógico', //VERDE
     OPERADOR_ASIGNACION: 'Operador de Asignación', //NARANJA
