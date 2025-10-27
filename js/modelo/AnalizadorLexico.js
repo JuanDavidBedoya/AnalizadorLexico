@@ -31,8 +31,8 @@ export class AnalizadorLexico {
                         this.extraerLogico() || 
                         this.extraerAsignacion() ||
                         this.extraerIncrementoDecremento()  ||
-                        this.extraerParentesis();
-
+                        this.extraerParentesis() ||
+                        this.extraerEntero();
             if (token) {
                 this.tokens.push(token);
             } else {
@@ -53,6 +53,48 @@ export class AnalizadorLexico {
         }
         return this.tokens;
     }
+
+    // Autómata 1   
+    extraerEntero() {
+        let lexema = '';
+        const categoria = Categoria.NUMERO_ENTERO;
+
+        if (!this.esDigito(this.caracterActual())) {
+            return null;
+        }
+
+       
+        while (this.esDigito(this.caracterActual())) {
+            lexema += this.caracterActual();
+            this.avanzar();
+        }
+
+        if (lexema.length > 15) {
+            return new Token(lexema, Categoria.ERROR_TOKEN_NO_RECONOCIDO, this.indice);
+        }
+
+        return new Token(lexema, categoria, this.indice);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //Autómata 6
     extraerComparacion() {

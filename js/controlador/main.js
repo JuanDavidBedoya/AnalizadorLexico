@@ -60,8 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 fila.classList.add('bg-yellow-200', 'text-yellow-800', 'font-medium');
             }else if (token.categoria === Categoria.COMENTARIO_LINEA ||
                        token.categoria === Categoria.COMENTARIO_BLOQUE) {
-                fila.classList.add('bg-teal-200', 'text-teal-800', 'font-medium');
+                fila.classList.add('bg-teal-200', 'text-teal-800', 'font-medium'); 
+            }else if (token.categoria === Categoria.NUMERO_ENTERO) {
+                fila.classList.add('bg-purple-200', 'text-purple-800', 'font-medium');
             }
+            
 
             let lexemaParaMostrar = token.lexema;
             
