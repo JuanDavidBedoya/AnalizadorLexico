@@ -3,7 +3,7 @@ import { Token } from './Token.js';
 
 export class AnalizadorLexico {
 
-    //Inicio del Analizador Léxico HOLAAAAAAAAAAAA
+    //Inicio del Analizador Léxico 
 
     constructor(codigoFuente) {
         this.codigoFuente = codigoFuente;
@@ -22,21 +22,21 @@ export class AnalizadorLexico {
             }
 
             // 2. Comprobación de todos los tokens, aquí se llaman los autómatas
-            let token = this.extraerComentarios() ||
-                        this.extraerCadenaCaracteres() ||
-                        this.extraerLlaves() ||
-                        this.extraerTerminal() ||             
-                        this.extraerSeparador() ||
-                        this.extraerComparacion() ||
-                        this.extraerLogico() || 
-                        this.extraerAsignacion() ||
-                        this.extraerIncrementoDecremento()  ||
-                        this.extraerParentesis() ||
-                        this.extraerPalabraReservada() ||
-                        this.extraerIdentificador() ||
-                        this.extraerDecimal() ||
-                        this.extraerEntero() ||
-                        this.extraerOperadorAritmetico() 
+            let token = this.extraerComentarios() || //Autómata 15
+                        this.extraerCadenaCaracteres() || //Autómata 14
+                        this.extraerIncrementoDecremento() || //Autómata 9
+                        this.extraerComparacion() || //Autómata 6
+                        this.extraerLogico() || //Autómata 7
+                        this.extraerAsignacion() || //Autómata 8
+                        this.extraerOperadorAritmetico() || //Autómata 5
+                        this.extraerDecimal() || //Autómata 2
+                        this.extraerEntero() || //Autómata 1
+                        this.extraerPalabraReservada() || //Autómata 4
+                        this.extraerIdentificador() || //Autómata 3
+                        this.extraerLlaves() || //Autómata 11
+                        this.extraerParentesis() || //Autómata 10
+                        this.extraerSeparador() || //Autómata 13
+                        this.extraerTerminal(); //Autómata 12
                         
 
             if (token) {
@@ -113,46 +113,54 @@ export class AnalizadorLexico {
     
     // Autómata 3
     extraerIdentificador() {
-    const inicio = this.indice;
-    let lexema = '';
+        const inicio = this.indice;
+        let lexema = '';
 
-    const charInicial = this.caracterActual();
-    if (!(this.esLetra(charInicial) || charInicial === '_')) {
-        return null;
-    }
+        const charInicial = this.caracterActual();
+        if (!(this.esLetra(charInicial) || charInicial === '_')) {
+            return null;
+        }
 
-    lexema += charInicial;
-    this.avanzar();
-
-    while (
-        this.caracterActual() !== null &&
-        (this.esLetra(this.caracterActual()) ||
-        this.esDigito(this.caracterActual()) ||
-        this.caracterActual() === '_')
-    ) {
-        lexema += this.caracterActual();
+        lexema += charInicial;
         this.avanzar();
+
+        while (
+            this.caracterActual() !== null &&
+            (this.esLetra(this.caracterActual()) ||
+            this.esDigito(this.caracterActual()) ||
+            this.caracterActual() === '_')
+        ) {
+            lexema += this.caracterActual();
+            this.avanzar();
+        }
+
+        if (lexema.length > 15) {
+            console.warn(`❌ Identificador demasiado largo: "${lexema}" (${lexema.length} caracteres)`);
+
+            return new Token(lexema, Categoria.ERROR_LONGITUD_IDENTIFICADOR, inicio);
+        }
+
+        return new Token(lexema, Categoria.IDENTIFICADOR, inicio);
     }
 
-    if (lexema.length > 15) {
-        console.warn(`❌ Identificador demasiado largo: "${lexema}" (${lexema.length} caracteres)`);
-
-        return new Token(lexema, Categoria.ERROR_LONGITUD_IDENTIFICADOR, inicio);
-    }
-
-    return new Token(lexema, Categoria.IDENTIFICADOR, inicio);
-}
-
-    // Autómata 4: 
+    // Autómata 4
     extraerPalabraReservada() {
         const inicio = this.indice;
         let lexema = '';
 
         const palabrasReservadas = [
-            'import', 'class', 'void', 'if', 'else',
-            'for', 'while', 'return', 'break', 'continue',
-            'new', 'this', 'super', 'const', 'final',
-            'var', 'true', 'false', 'null'
+
+        'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'default', 'break', 'continue', 'return', 'yield', 'await', 'async', 'try', 'catch', 'throw', 'finally',
+
+        'class', 'enum', 'mixin', 'extends', 'implements', 'with', 'abstract', 'interface', 'typedef', 'import', 'export', 'library', 'part', 'of',
+
+        'var', 'final', 'const', 'late', 'static', 'dynamic', 'void', 'null', 'true', 'false', 'this', 'super', 'new',
+
+        'int', 'double', 'num', 'bool', 'String', 'List', 'Map', 'Set', 'Object', 'Future', 'Stream',
+
+        'operator', 'get', 'set', 'required', 'covariant', 'external', 'factory', 'assert', 'in', 'is', 'as', 'on', 'show', 'hide',
+
+        'deferred', 'rethrow', 'sync'
         ];
 
         const charInicial = this.caracterActual();
@@ -179,15 +187,13 @@ export class AnalizadorLexico {
         return null;
     }
 
-    // Autómata 5: Operadores aritméticos (+, -, *, /, %)
+    // Autómata 5
     extraerOperadorAritmetico() {
         const inicio = this.indice;
         const char = this.caracterActual();
 
-        // Lista de operadores válidos en Dart
         const operadoresSimples = ['+', '-', '*', '/', '%'];
 
-        // Doble operador (por ejemplo: ++ o --)
         const siguiente = this.caracterSiguiente();
         if ((char === '+' && siguiente === '+') || (char === '-' && siguiente === '-')) {
             const lexema = char + siguiente;
@@ -196,33 +202,13 @@ export class AnalizadorLexico {
             return new Token(lexema, Categoria.OPERADOR_ARITMETICO, inicio);
         }
 
-        // Operadores simples
         if (operadoresSimples.includes(char)) {
             this.avanzar();
             return new Token(char, Categoria.OPERADOR_ARITMETICO, inicio);
         }
 
-        return null; // No es un operador aritmético
+        return null; 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //Autómata 6
     extraerComparacion() {
@@ -403,6 +389,11 @@ export class AnalizadorLexico {
                 } else {
                     return null; 
                 }
+                break;
+            
+            case ':':
+                lexema = ':';
+                this.avanzar(); 
                 break;
 
             default:

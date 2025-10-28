@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fila.classList.add('bg-cyan-200', 'text-cyan-800', 'font-medium');
             }else if (token.categoria === Categoria.LLAVE_APERTURA ||
                      token.categoria === Categoria.LLAVE_CIERRE) {
-                fila.classList.add('bg-gray-200', 'text-gray-800', 'font-medium');
+                fila.classList.add('bg-gray-300', 'text-gray-800', 'font-medium');
             }else if (token.categoria === Categoria.TERMINAL) {
                 fila.classList.add('bg-lime-200', 'text-lime-800', 'font-medium');
             }else if (token.categoria === Categoria.SEPARADOR) {
@@ -62,21 +62,18 @@ document.addEventListener('DOMContentLoaded', () => {
                        token.categoria === Categoria.COMENTARIO_BLOQUE) {
                 fila.classList.add('bg-teal-200', 'text-teal-800', 'font-medium'); 
             }else if (token.categoria === Categoria.NUMERO_ENTERO) {
-                fila.classList.add('bg-purple-400', 'text-purple-800', 'font-medium');
+                fila.classList.add('bg-purple-200', 'text-purple-800', 'font-medium');
             }else if (token.categoria === Categoria.NUMERO_DECIMAL) {
-                fila.classList.add('bg-amber-300', 'text-amber-900', 'font-medium');
+                fila.classList.add('bg-amber-200', 'text-amber-900', 'font-medium');
             }else if (token.categoria === Categoria.IDENTIFICADOR) {
                 fila.classList.add('bg-emerald-200', 'text-emerald-800', 'font-medium');
             }else if (token.categoria === Categoria.ERROR_LONGITUD_IDENTIFICADOR) {
-                fila.classList.add('bg-rose-300', 'text-rose-900', 'font-medium'); 
+                fila.classList.add('bg-rose-200', 'text-rose-900', 'font-medium'); 
             }else if (token.categoria === Categoria.PALABRA_RESERVADA) {
-                fila.classList.add('bg-zinc-500', 'text-zinc-800', 'font-semibold'); 
+                fila.classList.add('bg-zinc-200', 'text-zinc-800', 'font-semibold'); 
             }else if (token.categoria === Categoria.OPERADOR_ARITMETICO) {
                 fila.classList.add('bg-stone-200', 'text-stone-800', 'font-semibold'); 
             }
-
-
-            let lexemaParaMostrar = token.lexema;
             
             fila.innerHTML = `
                 <td>${token.lexema}</td>
