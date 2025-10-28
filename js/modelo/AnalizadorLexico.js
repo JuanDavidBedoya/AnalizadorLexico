@@ -121,7 +121,7 @@ export class AnalizadorLexico {
         this.avanzar();
 
         while (
-            this.caracterActual() !== '\0' &&
+            this.caracterActual() !== null &&
             (this.esLetra(this.caracterActual()) ||
              this.esDigito(this.caracterActual()) ||
              this.caracterActual() === '_')
