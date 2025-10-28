@@ -74,10 +74,6 @@ export class AnalizadorLexico {
             this.avanzar();
         }
 
-        if (lexema.length > 15) {
-            return new Token(lexema, Categoria.ERROR_TOKEN_NO_RECONOCIDO, this.indice);
-        }
-
         return new Token(lexema, categoria, this.indice);
     }
 
@@ -125,10 +121,10 @@ export class AnalizadorLexico {
         this.avanzar();
 
         while (
-            this.caracterActual() !== null &&
+            this.caracterActual() !== '\0' &&
             (this.esLetra(this.caracterActual()) ||
-            this.esDigito(this.caracterActual()) ||
-            this.caracterActual() === '_')
+             this.esDigito(this.caracterActual()) ||
+             this.caracterActual() === '_')
         ) {
             lexema += this.caracterActual();
             this.avanzar();
@@ -136,6 +132,9 @@ export class AnalizadorLexico {
 
         if (lexema.length > 15) {
             return new Token(lexema, Categoria.ERROR_LONGITUD_IDENTIFICADOR, inicio);
+        }
+        if (this.palabrasReservadas.has(lexema)) {
+            return new Token(lexema, Categoria.PALABRA_RESERVADA, inicio);
         }
 
         return new Token(lexema, Categoria.IDENTIFICADOR, inicio);
