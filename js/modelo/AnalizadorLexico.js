@@ -133,10 +133,6 @@ export class AnalizadorLexico {
         if (lexema.length > 15) {
             return new Token(lexema, Categoria.ERROR_LONGITUD_IDENTIFICADOR, inicio);
         }
-        if (this.palabrasReservadas.has(lexema)) {
-            return new Token(lexema, Categoria.PALABRA_RESERVADA, inicio);
-        }
-
         return new Token(lexema, Categoria.IDENTIFICADOR, inicio);
     }
 
