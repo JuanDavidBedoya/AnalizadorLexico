@@ -33,6 +33,7 @@ export const Categoria = Object.freeze({
     // Comentarios
     COMENTARIO_LINEA: 'Comentario de Línea', //TEAL
     COMENTARIO_BLOQUE: 'Comentario de Bloque', //TEAL
+    COMENTARIO_DOCUMENTACION: 'Comentario de Documentación', //TEAL
 
     // Errores
     ERROR_CADENA_SIN_CERRAR: 'Error: Cadena sin cerrar', //ROJO

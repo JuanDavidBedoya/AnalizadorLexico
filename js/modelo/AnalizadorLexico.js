@@ -605,17 +605,29 @@ export class AnalizadorLexico {
     extraerComentarios() {
         const charActual = this.caracterActual();
         const charSiguiente = this.caracterSiguiente();
+        const charSiguiente2 = this.caracterSiguienteSiguiente();
         const posicionInicial = this.indice;
 
         if (charActual === '/') {
             if (charSiguiente === '/') {
-                this.avanzar(); this.avanzar();
-                let lexema = '//';
+                
+                let categoria = Categoria.COMENTARIO_LINEA;
+                let lexemaInicial = '//';
+
+                if (charSiguiente2 === '/') {
+                    categoria = Categoria.COMENTARIO_DOCUMENTACION; 
+                    lexemaInicial = '///';
+                    this.avanzar();
+                }
+
+                this.avanzar(); this.avanzar(); 
+
+                let lexema = lexemaInicial;
                 while (this.indice < this.codigoFuente.length && this.caracterActual() !== '\n' && this.caracterActual() !== '\r') {
                     lexema += this.caracterActual();
                     this.avanzar();
                 }
-                return new Token(lexema, Categoria.COMENTARIO_LINEA, posicionInicial);
+                return new Token(lexema, categoria, posicionInicial);
 
             } else if (charSiguiente === '*') {
                 this.avanzar(); this.avanzar();
@@ -640,7 +652,6 @@ export class AnalizadorLexico {
                 if (encontradoCierre) {
                     return new Token(lexema, Categoria.COMENTARIO_BLOQUE, posicionInicial);
                 } else {
-
                     return new Token(lexema, Categoria.ERROR_BLOQUE_SIN_CERRAR, posicionInicial);
                 }
             }
