@@ -192,7 +192,7 @@ export class AnalizadorLexico {
         const operadoresSimples = ['+', '-', '*', '/', '%'];
 
         const siguiente = this.caracterSiguiente();
-        if ((char === '+' && siguiente === '+') || (char === '-' && siguiente === '-')) {
+        if ((char === '~' && siguiente === '/')) {
             const lexema = char + siguiente;
             this.avanzar(); 
             this.avanzar();
