@@ -76,9 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             fila.innerHTML = `
-                <td>${token.lexema}</td>
-                <td>${token.categoria}</td>
-                <td>${token.posicion}</td>
+                <td class="p-4 break-words">${token.lexema}</td>
+                <td class="p-4">${token.categoria}</td>
+                <td class="p-4">${token.posicion}</td>
             `;
             cuerpoTabla.appendChild(fila);
         });
