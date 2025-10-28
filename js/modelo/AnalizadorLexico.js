@@ -135,8 +135,6 @@ export class AnalizadorLexico {
         }
 
         if (lexema.length > 15) {
-            console.warn(`❌ Identificador demasiado largo: "${lexema}" (${lexema.length} caracteres)`);
-
             return new Token(lexema, Categoria.ERROR_LONGITUD_IDENTIFICADOR, inicio);
         }
 
