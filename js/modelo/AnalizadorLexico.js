@@ -512,11 +512,12 @@ export class AnalizadorLexico {
 
     //Autómata 14
     extraerCadenaCaracteres() {
+        const posicionInicial = this.indice;
+
         const charActual = this.caracterActual();
         const charSiguiente = this.caracterSiguiente();
         const charSiguiente2 = this.caracterSiguienteSiguiente();
-        const posicionInicial = this.indice;
-        
+
         let delimitador = null;
         let esMultilinea = false;
 
@@ -534,60 +535,67 @@ export class AnalizadorLexico {
             } else {
                 delimitador = '\'';
             }
-        }
-
-        if (!delimitador) {
+        } else {
             return null;
         }
 
-        for (let i = 0; i < delimitador.length; i++) {
-            this.avanzar();
-        }
+        for (let k = 0; k < delimitador.length; k++) this.avanzar();
 
         let lexema = delimitador;
 
+        const escapesValidos = ['n', 'r', 't', '\'', '"', '\\'];
+
         while (this.indice < this.codigoFuente.length) {
-            let char = this.caracterActual();
-            let finDelimitador = this.codigoFuente.substring(this.indice, this.indice + delimitador.length);
-            
-            if (!esMultilinea && (char === '\n' || char === '\r')) {
+            const c = this.caracterActual();
+            const finDelimitador = this.codigoFuente.substring(this.indice, this.indice + delimitador.length);
 
-                const tokenError = new Token(
-                    lexema,
-                    Categoria.ERROR_CADENA_SIN_CERRAR,
-                    posicionInicial
-                );
-
-                return tokenError;
+            if (!esMultilinea && (c === '\n' || c === '\r')) {
+                return new Token(lexema, Categoria.ERROR_CADENA_SIN_CERRAR, posicionInicial);
             }
 
-            if (char === '\\') {
-                const charSiguienteEscape = this.caracterSiguiente();
-                if (charSiguienteEscape !== '\0') {
-                    lexema += char + charSiguienteEscape;
+            if (c === '\\') {
+                const next = this.caracterSiguiente();
+
+                if (next === '\0') {
+                    lexema += '\\';
                     this.avanzar();
-                    this.avanzar(); 
-                } else {
-                    this.avanzar(); 
-                    const tokenError = new Token(
-                        lexema,
-                        Categoria.ERROR_CADENA_SIN_CERRAR,
-                        posicionInicial
-                    );
-                    return tokenError;
+                    return new Token(lexema, Categoria.ERROR_CADENA_SIN_CERRAR, posicionInicial);
                 }
+
+                if (!escapesValidos.includes(next)) {
+                    lexema += '\\' + next;
+                    this.avanzar(); this.avanzar();
+                    return new Token(lexema, Categoria.ERROR_ESCAPE_INVALIDO, posicionInicial);
+                }
+
+                lexema += '\\' + next;
+                this.avanzar(); this.avanzar();
                 continue;
             }
 
             if (finDelimitador === delimitador) {
-                for (let i = 0; i < delimitador.length; i++) {
-                    this.avanzar();
+                if (delimitador.length === 1) {
+                    let j = this.indice - 1;
+                    let countBackslashes = 0;
+                    while (j >= 0 && this.codigoFuente.charAt(j) === '\\') {
+                        countBackslashes++;
+                        j--;
+                    }
+                    if (countBackslashes % 2 === 0) {
+                        this.avanzar();
+                        lexema += delimitador;
+                        return new Token(lexema, Categoria.CADENA_CARACTERES, posicionInicial);
+                    }
+                } else {
+                    for (let k = 0; k < 3; k++) {
+                        lexema += this.caracterActual();
+                        this.avanzar();
+                    }
+                    return new Token(lexema, Categoria.CADENA_CARACTERES, posicionInicial);
                 }
-                lexema += delimitador;
-                return new Token(lexema, Categoria.CADENA_CARACTERES, posicionInicial);
             }
 
-            lexema += char;
+            lexema += c;
             this.avanzar();
         }
 

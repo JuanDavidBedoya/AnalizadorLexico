@@ -38,6 +38,7 @@ export const Categoria = Object.freeze({
     // Errores
     ERROR_CADENA_SIN_CERRAR: 'Error: Cadena sin cerrar', //ROJO
     ERROR_BLOQUE_SIN_CERRAR: 'Error: Bloque sin cerrar', //ROJO
+    ERROR_ESCAPE_INVALIDO: 'Error: secuencia de escape inválida', //ROJO
     ERROR_IDENTIFICADOR_LARGO: 'Error: Identificador muy largo', //ROJO
     ERROR_TOKEN_NO_RECONOCIDO: 'Error: Token no reconocido' //ROJO
 });
