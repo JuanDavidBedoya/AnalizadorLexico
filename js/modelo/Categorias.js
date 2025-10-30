@@ -17,7 +17,8 @@ export const Categoria = Object.freeze({
     OPERADOR_COMPARACION: 'Operador de Comparación', //AZUL
     OPERADOR_LOGICO: 'Operador Lógico', //VERDE
     OPERADOR_ASIGNACION: 'Operador de Asignación', //NARANJA
-    OPERADOR_INCREMENTO_DECREMENTO: 'Operador de Incremento o Decremento', //MORADO
+    OPERADOR_INCREMENTO: 'Operador de Incremento', //MORADO
+    OPERADOR_DECREMENTO: 'Operador de Decremento', //MORADO
 
     // Delimitadores
     PARENTESIS_APERTURA: 'Paréntesis de Apertura', //CYAN

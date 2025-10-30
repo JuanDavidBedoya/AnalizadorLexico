@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 fila.classList.add('bg-green-200', 'text-green-800', 'font-medium');
             }else if (token.categoria === Categoria.OPERADOR_ASIGNACION) {
                 fila.classList.add('bg-orange-200', 'text-orange-800', 'font-medium');
-            }else if (token.categoria === Categoria.OPERADOR_INCREMENTO_DECREMENTO){
+            }else if (token.categoria === Categoria.OPERADOR_INCREMENTO ||
+                       token.categoria === Categoria.OPERADOR_DECREMENTO) {
                 fila.classList.add('bg-indigo-200', 'text-indigo-800', 'font-medium');
             }else if (token.categoria === Categoria.PARENTESIS_APERTURA ||
                        token.categoria === Categoria.PARENTESIS_CIERRE) {
@@ -82,10 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             fila.innerHTML = `
-                <td class="p-4 break-words">${token.lexema}</td>
-                <td class="p-4">${token.categoria}</td>
-                <td class="p-4">${token.posicion}</td>
+                <td class="p-4 break-words border-r border-purple-100">${token.lexema}</td>
+                <td class="p-4 border-r border-purple-100">${token.categoria}</td>
+                <td class="p-4 text-center">${token.posicion}</td>
             `;
+
             cuerpoTabla.appendChild(fila);
         });
     };

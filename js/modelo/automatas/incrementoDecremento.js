@@ -18,7 +18,7 @@ export class extraerIncrementoDecremento {
                 if (charSiguiente === '+') {
 
                     lexema = '++';
-                    categoria = Categoria.OPERADOR_INCREMENTO_DECREMENTO;
+                    categoria = Categoria.OPERADOR_INCREMENTO;
                     contexto.avanzar(); 
                     contexto.avanzar(); 
                 } else {
@@ -30,7 +30,7 @@ export class extraerIncrementoDecremento {
                 if (charSiguiente === '-') {
 
                     lexema = '--';
-                    categoria = Categoria.OPERADOR_INCREMENTO_DECREMENTO;
+                    categoria = Categoria.OPERADOR_DECREMENTO;
                     contexto.avanzar(); 
                     contexto.avanzar(); 
                 } else {

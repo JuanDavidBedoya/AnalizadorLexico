@@ -2,68 +2,76 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analizador Léxico JS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analizador Léxico JS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        mono: ['"Courier New"', 'Courier', 'monospace'],
-                    },
-                }
-            }
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['"JetBrains Mono"', '"Courier New"', 'monospace'],
+          },
+          backgroundImage: {
+            'gradient-header': 'linear-gradient(90deg, #7c3aed, #a855f7, #ec4899)',
+          },
         }
-    </script>
+      }
+    }
+  </script>
 </head>
 
-<body class="bg-white text-gray-900 min-h-screen p-8">
+<body class="bg-gradient-to-br from-purple-50 via-white to-pink-50 text-gray-900 min-h-screen p-8">
 
-    <main class="max-w-6xl mx-auto grid grid-cols-1 gap-8">
+  <main class="max-w-6xl mx-auto grid grid-cols-1 gap-10">
 
-        <div class="flex flex-col">
-            <h1 class="text-3xl font-bold text-center mb-6 text-purple-700">Analizador Léxico</h1>
+    <!-- Encabezado con gradiente animado -->
+    <h1 class="text-4xl font-extrabold text-center bg-gradient-header bg-clip-text text-transparent animate-pulse">
+      🔍 Analizador Léxico
+    </h1>
 
-            <div>
-                <label for="codigoFuente" class="block text-sm font-medium text-gray-600 mb-2">
-                    Panel de Código
-                </label>
-                <textarea id="codigoFuente" rows="20"
-                    class="w-full p-4 bg-white border border-gray-300 rounded-lg text-gray-900 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                    placeholder="Escribe tu código aquí..."></textarea>
-            </div>
+    <!-- Panel de código -->
+    <div class="flex flex-col p-6 rounded-2xl backdrop-blur-lg bg-white/70 shadow-xl border border-purple-200 hover:shadow-2xl transition-shadow duration-300">
+      <label for="codigoFuente" class="block text-lg font-semibold text-purple-700 mb-3">
+        Panel de Código
+      </label>
 
-            <button id="btnAnalizar"
-                class="mt-4 w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
-                Analizar
-            </button>
-        </div>
+      <textarea id="codigoFuente" rows="18"
+        class="w-full p-4 bg-white/80 border border-purple-200 rounded-xl text-gray-900 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none shadow-inner"
+        placeholder="💡 Escribe tu código aquí..."></textarea>
 
-        <div class="flex flex-col">
-            <h2 class="text-2xl font-semibold mb-4 text-center text-purple-700">Resultados del Análisis</h2>
+      <button id="btnAnalizar"
+        class="mt-6 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-pink-300 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-pink-400 focus:ring-opacity-50">
+        Analizar Código
+      </button>
+    </div>
 
-            <div class="overflow-x-auto rounded-lg border border-gray-300">
+    <!-- Resultados -->
+    <div class="flex flex-col p-6 rounded-2xl backdrop-blur-lg bg-white/70 shadow-xl border border-purple-200 hover:shadow-2xl transition-shadow duration-300">
+      <h2 class="text-2xl font-semibold mb-4 text-center text-purple-700">Resultados del Análisis</h2>
 
-                <table id="tablaTokens" class="w-full text-left table-fixed">
-                    <thead class="bg-purple-100 uppercase text-sm text-purple-800">
-                        <tr>
-                            <th class="p-4 font-semibold w-3/5">Lexema</th>
-                            <th class="p-4 font-semibold w-1/5">Categoría</th>
-                            <th class="p-4 font-semibold w-1/5">Posición (Índice)</th>
-                        </tr>
-                    </thead>
+      <div class="overflow-x-auto rounded-xl border border-gray-300 shadow-sm hover:shadow-md transition-shadow duration-200">
+        <table id="tablaTokens" class="w-full text-left table-fixed">
+          <thead class="bg-purple-200/60 uppercase text-sm text-purple-900">
+            <tr>
+              <th class="p-4 font-semibold w-3/5">Lexema</th>
+              <th class="p-4 font-semibold w-1/5">Categoría</th>
+              <th class="p-4 font-semibold w-1/5">Posición</th>
+            </tr>
+          </thead>
 
-                    <tbody id="cuerpoTabla" class="bg-white divide-y divide-gray-200">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </main>
+          <tbody id="cuerpoTabla"
+            class="bg-white/70 divide-y divide-purple-100 transition-all duration-300 hover:divide-purple-200">
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-    <script type="module" src="../controlador/main.js"></script>
+  </main>
+
+  <script type="module" src="../controlador/main.js"></script>
 
 </body>
 
