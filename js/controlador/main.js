@@ -74,6 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 fila.classList.add('bg-zinc-200', 'text-zinc-800', 'font-semibold'); 
             }else if (token.categoria === Categoria.OPERADOR_ARITMETICO) {
                 fila.classList.add('bg-stone-200', 'text-stone-800', 'font-semibold'); 
+            }else if (token.categoria === Categoria.ACCESO) {
+                fila.classList.add('bg-white', 'text-stone-800', 'font-semibold'); 
+            }else if (token.categoria === Categoria.CORCHETE_APERTURA ||
+                       token.categoria === Categoria.CORCHETE_CIERRE) {
+                fila.classList.add('bg-violet-200', 'text-violet-800', 'font-medium');
             }
             
             fila.innerHTML = `
