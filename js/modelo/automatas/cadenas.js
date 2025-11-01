@@ -1,7 +1,7 @@
 import { Token } from '../Token.js';
 import { Categoria } from '../Categorias.js';
 
-export class extraerCadenaCaracteres {    
+export class extraerCadenaCaracteres {
     
     //Autómata 14
     ejecutar(contexto) {
@@ -34,12 +34,13 @@ export class extraerCadenaCaracteres {
         for (let k = 0; k < delimitador.length; k++) contexto.avanzar();
 
         let lexema = delimitador;
+        let categoriaError = null; 
 
         const escapesValidos = ['n', 'r', 't', '\'', '"', '\\'];
 
         while (contexto.indice < contexto.codigoFuente.length) {
             const c = contexto.caracterActual();
-            const finDelimitador = contexto.codigoFuente.substring(contexto.indice, contexto.indice + delimitador.length);
+            const finDelimitador = contexto.codigoFuente.substring(contexto.indice, contexto.indice + delimitador.length); 
 
             if (!esMultilinea && (c === '\n' || c === '\r')) {
                 return new Token(lexema, Categoria.ERROR_CADENA_SIN_CERRAR, posicionInicial);
@@ -51,18 +52,19 @@ export class extraerCadenaCaracteres {
                 if (next === '\0') {
                     lexema += '\\';
                     contexto.avanzar();
-                    return new Token(lexema, Categoria.ERROR_CADENA_SIN_CERRAR, posicionInicial);
+                    if (!categoriaError) categoriaError = Categoria.ERROR_CADENA_SIN_CERRAR;
                 }
-
-                if (!escapesValidos.includes(next)) {
+                else if (!escapesValidos.includes(next)) {
                     lexema += '\\' + next;
                     contexto.avanzar(); contexto.avanzar();
-                    return new Token(lexema, Categoria.ERROR_ESCAPE_INVALIDO, posicionInicial);
+                    if (!categoriaError) categoriaError = Categoria.ERROR_ESCAPE_INVALIDO;
+                    continue; 
                 }
-
-                lexema += '\\' + next;
-                contexto.avanzar(); contexto.avanzar();
-                continue;
+                else { 
+                    lexema += '\\' + next;
+                    contexto.avanzar(); contexto.avanzar();
+                    continue;
+                }
             }
 
             if (finDelimitador === delimitador) {
@@ -76,21 +78,23 @@ export class extraerCadenaCaracteres {
                     if (countBackslashes % 2 === 0) {
                         contexto.avanzar();
                         lexema += delimitador;
-                        return new Token(lexema, Categoria.CADENA_CARACTERES, posicionInicial);
+                        const categoriaFinal = categoriaError || Categoria.CADENA_CARACTERES;
+                        return new Token(lexema, categoriaFinal, posicionInicial);
                     }
                 } else {
                     for (let k = 0; k < 3; k++) {
                         lexema += contexto.caracterActual();
                         contexto.avanzar();
                     }
-                    return new Token(lexema, Categoria.CADENA_CARACTERES, posicionInicial);
+                    const categoriaFinal = categoriaError || Categoria.CADENA_CARACTERES;
+                    return new Token(lexema, categoriaFinal, posicionInicial);
                 }
             }
 
             lexema += c;
             contexto.avanzar();
         }
-
-        return new Token(lexema, Categoria.ERROR_CADENA_SIN_CERRAR, posicionInicial);
+        const categoriaFinalError = categoriaError || Categoria.ERROR_CADENA_SIN_CERRAR;
+        return new Token(lexema, categoriaFinalError, posicionInicial);
     }
 }
